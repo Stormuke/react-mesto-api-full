@@ -1,5 +1,6 @@
 const allowedCors = [
   'http://localhost:3000',
+  'http://localhost:3000/react-mesto-auth',
   'http://api.stormuke.nomoredomains.xyz/',
   'https://api.stormuke.nomoredomains.xyz/',
 ];
