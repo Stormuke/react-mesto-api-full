@@ -68,7 +68,7 @@ function App() {
             .then(() => {
                 setPopupImage(success)
                 setPopupTitle("Вы успешно зарегистрировались!")
-                navigate('/sign-in')
+                navigate('/signin')
             })
             .catch(() => {
                 setPopupImage(fail)
@@ -253,17 +253,17 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
       <div className="container">
               <Routes>
-                  <Route path="/sign-in" element={
+                  <Route path="/signin" element={
                       <>
-                          <Header title={loader ? "" : "Регистрация"} route="/sign-up" />
+                          <Header title={loader ? "" : "Регистрация"} route="/signup" />
                           {loader ? <Spinner /> : <Login onLogin={onLogin}/>}
                       </>
 
                   }
                   />
-                  <Route path="/sign-up" element={
+                  <Route path="/signup" element={
                       <>
-                          <Header title="Войти" route="/sign-in"/>
+                          <Header title="Войти" route="/signin"/>
                           <Register onRegister={onRegister} />
                       </>
 
@@ -291,7 +291,7 @@ function App() {
                       </>
                   }
                   />
-                  <Route path="*" element={<Navigate to={isLoggedIn ? "/" : "/sign-in"}/>} />
+                  <Route path="*" element={<Navigate to={isLoggedIn ? "/" : "/signin"}/>} />
               </Routes>
 
           <ImagePopup
