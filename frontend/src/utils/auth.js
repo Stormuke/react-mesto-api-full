@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://api.stormuke.nomoredomains.xyz/'
+export const BASE_URL = 'http://api.stormuke.nomoredomains.xyz'
 
 export function register(email, password) {
     return fetch(`${BASE_URL}/signup`,{
