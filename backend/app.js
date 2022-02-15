@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('./middlewares/cors')
@@ -22,6 +23,7 @@ app.post('/signin', loginValidation, login);
 app.use(auth);
 
 app.use(routes);
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(errorLogger);
 app.use(errors());
