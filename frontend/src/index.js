@@ -7,7 +7,7 @@ import {BrowserRouter} from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-      <BrowserRouter basename='/react-mesto-auth'>
+      <BrowserRouter basename='/'>
           <App />
       </BrowserRouter>
   </React.StrictMode>,

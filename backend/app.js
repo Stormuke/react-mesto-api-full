@@ -14,6 +14,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { PORT = 3000 } = process.env;
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors);
 
 app.use(requestLogger);
@@ -23,7 +24,7 @@ app.post('/signin', loginValidation, login);
 app.use(auth);
 
 app.use(routes);
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use(errorLogger);
 app.use(errors());
