@@ -71,6 +71,7 @@ function App() {
                 navigate('/signin')
             })
             .catch(() => {
+                closeAllPopups()
                 setPopupImage(fail)
                 setPopupTitle('Что-то пошло не так! Попробуйте ещё раз.')
             })
@@ -86,6 +87,7 @@ function App() {
                 navigate('/')
             })
             .catch(() => {
+                closeAllPopups()
                 setPopupImage(fail)
                 setPopupTitle('Не верные имя пользователя или пароль.')
                 handleInfoTooltip()
@@ -93,19 +95,22 @@ function App() {
     }
 
     useEffect(() => {
-        setSpinner(true)
-        Promise.all([api.getUserInfo(), api.getInitialCards()])
-            .then(([user, cards]) => {
-                setCurrentUser(user)
-                setCards(cards)
-            })
-            .catch(() => {
-                setPopupImage(fail)
-                setPopupTitle('Ошибка загрузки приложения')
-                handleInfoTooltip()
-            })
-            .finally(() => setSpinner(false))
-    },[])
+        if (isLoggedIn === true) {
+            setSpinner(true)
+            Promise.all([api.getUserInfo(), api.getInitialCards()])
+                .then(([user, cards]) => {
+                    setCurrentUser(user)
+                    setCards(cards.reverse())
+                })
+                .catch(() => {
+                    closeAllPopups()
+                    setPopupImage(fail)
+                    setPopupTitle('Ошибка загрузки приложения')
+                    handleInfoTooltip()
+                })
+                .finally(() => setSpinner(false))
+        }
+    },[isLoggedIn])
 
     function handleCardLike(card) {
         const isLiked = card.likes.some(i => i._id === currentUser._id)
@@ -116,6 +121,7 @@ function App() {
                     setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
                 })
                 .catch(() => {
+                    closeAllPopups()
                     setPopupImage(fail)
                     setPopupTitle('Не получилось лайкнуть')
                     handleInfoTooltip()
@@ -126,6 +132,7 @@ function App() {
                     setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
                 })
                 .catch(() => {
+                    closeAllPopups()
                     setPopupImage(fail)
                     setPopupTitle('Не получилось дизлайкнуть')
                     handleInfoTooltip()
@@ -136,12 +143,13 @@ function App() {
     function handleDeleteCard(card) {
         api.deleteCard(card)
             .then(() => {
-                setCards((items) => items.filter((c) => c._id !== card._id && c))
+                setCards((items) => items.filter((c) => c !== card && c))
                 closeAllPopups()
             })
             .catch(() => {
+                closeAllPopups()
                 setPopupImage(fail)
-                setPopupTitle('Не получилось дизлайкнуть')
+                setPopupTitle('Не получилось удалить карточку')
                 handleInfoTooltip()
             })
     }
@@ -166,6 +174,7 @@ function App() {
               closeAllPopups()
             })
             .catch(() => {
+                closeAllPopups()
                 setPopupImage(fail)
                 setPopupTitle('Не удалось обновить аватар')
                 handleInfoTooltip()
@@ -179,6 +188,7 @@ function App() {
                 closeAllPopups()
             })
             .catch(() => {
+                closeAllPopups()
                 handleInfoTooltip()
                 setPopupImage(fail)
                 setPopupTitle('Не удалось добавить карточку попробуйте еще раз')
@@ -250,7 +260,7 @@ function App() {
     }
 
   return (
-      <CurrentUserContext.Provider value={currentUser}>
+      <CurrentUserContext.Provider value={currentUser.user}>
       <div className="container">
               <Routes>
                   <Route path="/signin" element={
