@@ -5,3 +5,6 @@
 ---
 
 https://stormuke.nomoredomains.xyz
+
+Публичный IP
+51.250.19.244
