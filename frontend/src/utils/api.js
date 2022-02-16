@@ -117,7 +117,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'http://api.stormuke.nomoredomains.xyz',
+  baseUrl: 'https://api.stormuke.nomoredomains.xyz',
   headers: {
     'Content-Type': 'application/json'
   }
