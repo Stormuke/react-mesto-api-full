@@ -99,7 +99,7 @@ function App() {
             setSpinner(true)
             Promise.all([api.getUserInfo(), api.getInitialCards()])
                 .then(([user, cards]) => {
-                    setCurrentUser(user)
+                    setCurrentUser(user.user)
                     setCards(cards.reverse())
                 })
                 .catch(() => {
@@ -113,7 +113,7 @@ function App() {
     },[isLoggedIn])
 
     function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i._id === currentUser._id)
+        const isLiked = card.likes.some(i => i === currentUser._id)
 
         if (!isLiked) {
             api.addCardLike(card._id)
@@ -260,7 +260,7 @@ function App() {
     }
 
   return (
-      <CurrentUserContext.Provider value={currentUser.user}>
+      <CurrentUserContext.Provider value={currentUser}>
       <div className="container">
               <Routes>
                   <Route path="/signin" element={

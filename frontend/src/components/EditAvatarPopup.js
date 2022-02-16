@@ -9,7 +9,7 @@ function EditAvatarPopup(props) {
         evt.preventDefault()
 
         props.onSubmit({
-            avatar_link: avatarRef.current.value
+            avatar: avatarRef.current.value
         })
     }
 

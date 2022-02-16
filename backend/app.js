@@ -1,9 +1,9 @@
-const path = require('path')
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('./middlewares/cors')
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
+const cors = require('./middlewares/cors');
 const { createUser, login } = require('./controllers/users');
 const { loginValidation, userValidation } = require('./middlewares/validation');
 const routes = require('./routes');
@@ -16,6 +16,11 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use(cors);
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.use(requestLogger);
 app.post('/signup', userValidation, createUser);
@@ -24,7 +29,6 @@ app.post('/signin', loginValidation, login);
 app.use(auth);
 
 app.use(routes);
-
 
 app.use(errorLogger);
 app.use(errors());
