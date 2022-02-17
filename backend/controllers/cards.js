@@ -17,6 +17,8 @@ const createCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError('Переданы некорректные данные при создании карточки');
+      } else {
+        next(err);
       }
     })
     .catch(next);
@@ -30,11 +32,11 @@ const deleteCard = (req, res, next) => {
     })
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
-        Cards.findByIdAndRemove(cardId)
-          .then(() => res.status(200).send(card));
-      } else {
-        throw new Forbidden('Вы пытаетесь удалить чужую карточку');
+        return Cards.findByIdAndRemove(cardId)
+          .then(() => res.status(200).send(card))
+          .catch(next);
       }
+      throw new Forbidden('Вы пытаетесь удалить чужую карточку');
     })
     .catch(next);
 };
@@ -54,6 +56,8 @@ const likeCard = (req, res, next) => {
         throw new ValidationError('Переданы некорректные данные');
       } else if (err.name === 'NotFoundError') {
         throw new NotFound('Передан несуществующий _id карточки');
+      } else {
+        next(err);
       }
     })
     .catch(next);
@@ -70,6 +74,8 @@ const dislikeCard = (req, res, next) => {
         throw new ValidationError('Переданы некорректные данные');
       } else if (err.name === 'NotFoundError') {
         throw new NotFound('Передан несуществующий _id карточки');
+      } else {
+        next(err);
       }
     })
     .catch(next);

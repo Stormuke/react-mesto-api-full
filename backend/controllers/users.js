@@ -25,6 +25,8 @@ const getUser = (req, res, next) => {
         throw new ValidationError('Переданы некорректные данные');
       } else if (err.name === 'NotFoundError') {
         throw new NotFound('Пользователь не найден');
+      } else {
+        next(err);
       }
     })
     .catch(next);
@@ -52,6 +54,8 @@ const createUser = (req, res, next) => {
         throw new ValidationError('Переданы некорректные данные при создании пользователя');
       } else if (err.code === 11000) {
         throw new ConflictError('Пользователь с таким email уже существует');
+      } else {
+        next(err);
       }
     })
     .catch(next);
@@ -67,6 +71,8 @@ const getCurrentUser = (req, res, next) => User.findById(req.user._id)
       throw new ValidationError('Переданы некорректные данные');
     } else if (err.name === 'NotFoundError') {
       throw new NotFound('Пользователь не найден');
+    } else {
+      next(err);
     }
   })
   .catch(next);
@@ -82,6 +88,8 @@ const updateUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         throw new ValidationError('Переданы некорректные данные при обновлении профиля');
+      } else {
+        next(err);
       }
     })
     .catch(next);
@@ -97,6 +105,8 @@ const updateAvatar = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         throw new ValidationError('Переданы некорректные данные при обновлении аватара');
+      } else {
+        next(err);
       }
     })
     .catch(next);
